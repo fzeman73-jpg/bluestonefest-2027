@@ -10,10 +10,14 @@ Vše podstatné je nahoře v `main.js` v objektu `CONFIG`:
 | --- | --- |
 | `ticketUrl` | odkaz na prodej v **Boom Events** – po vyplnění vedou všechna tlačítka „Koupit“ tam |
 | `instagram`, `facebook` | odkazy na sociální sítě (prázdné = skryté) |
-| `video` | YouTube ID nebo cesta k MP4 v `assets/video/` – nahradí placeholder v galerii |
 | `earlyBirdSoldOut` | po vyprodání 200 ks super early bird přepnout na `true` |
 
 Aktuální cenová vlna se zvýrazňuje automaticky podle data (ceník 2027).
+
+## Média 2026
+- `assets/video/` – celkové video (720p, ~9 MB) a 4 shorty (720p, 8–9 MB). Originály: OneDrive / HUDBA / Bluestone Fest / Videa 2026; verze nahrané na GitHub: `web-2027-github-videa`
+- `assets/foto2026/` – 33 vybraných fotek (plná verze + `-t` náhled). Originály: Foto Bluestone fest 2026
+- Nahrává se přes prohlížeč s limitem 10 MB na soubor – proto jsou videa přeenkódovaná pod 10 MB. Pro plnou kvalitu hlavního videa zvážit YouTube embed.
 
 ## Zdroje obsahu
 - Ceník: `Bluestone Fest Cenik 2027.docx`
@@ -22,7 +26,6 @@ Aktuální cenová vlna se zvýrazňuje automaticky podle data (ceník 2027).
 
 ## Zbývá doplnit
 - [ ] odkaz Boom Events
-- [ ] videa z 2026
 - [ ] popisy Piel Canela Marseille, Pan Lynx, akustický host
 - [ ] fotky headlinerů 2027 (zatím fotky z minulých ročníků)
 - [ ] Instagram/Facebook, stránka ochrany osobních údajů

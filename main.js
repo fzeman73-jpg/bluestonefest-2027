@@ -7,9 +7,6 @@ const CONFIG = {
   ticketUrl: "",
   instagram: "",
   facebook: "",
-  // Video z minulého ročníku: YouTube ID (např. "dQw4w9WgXcQ")
-  // nebo cesta k souboru v repozitáři (např. "assets/video/bluestone-2026.mp4").
-  video: "",
   festivalStart: "2027-07-10T14:00:00+02:00",
   earlyBirdSoldOut: false // po vyprodání 200 ks přepněte na true
 };
@@ -70,15 +67,34 @@ document.querySelectorAll("[data-ticket]").forEach(a => {
   tick(); setInterval(tick, 1000);
 })();
 
-/* ---------- video ---------- */
+/* ---------- galerie + lightbox ---------- */
 (function () {
-  const slot = document.querySelector("[data-video-slot]");
-  if (!slot || !CONFIG.video) return;
-  if (/^[\w-]{11}$/.test(CONFIG.video)) {
-    slot.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${CONFIG.video}" title="Bluestone Fest video" allow="accelerometer; autoplay; encrypted-media; picture-in-picture" allowfullscreen loading="lazy"></iframe>`;
-  } else {
-    slot.innerHTML = `<video src="${CONFIG.video}" controls playsinline preload="metadata" poster="assets/img/223.jpg"></video>`;
-  }
+  const items = [...document.querySelectorAll("[data-gal] .ph")];
+  const SHOW = 14;
+  const more = document.querySelector("[data-gal-more]");
+  if (items.length > SHOW) items.slice(SHOW).forEach(a => a.classList.add("is-hidden"));
+  else if (more) more.remove();
+  if (more) more.addEventListener("click", () => { items.forEach(a => a.classList.remove("is-hidden")); more.remove(); });
+
+  const lb = document.querySelector("[data-lbox]");
+  const img = lb.querySelector("img");
+  let i = 0;
+  const show = n => { i = (n + items.length) % items.length; img.src = items[i].href; lb.hidden = false; };
+  items.forEach((a, n) => a.addEventListener("click", e => { e.preventDefault(); show(n); }));
+  lb.querySelector(".lb__x").onclick = () => lb.hidden = true;
+  lb.querySelector(".lb__prev").onclick = e => { e.stopPropagation(); show(i - 1); };
+  lb.querySelector(".lb__next").onclick = e => { e.stopPropagation(); show(i + 1); };
+  lb.addEventListener("click", e => { if (e.target === lb) lb.hidden = true; });
+  document.addEventListener("keydown", e => {
+    if (lb.hidden) return;
+    if (e.key === "Escape") lb.hidden = true;
+    if (e.key === "ArrowLeft") show(i - 1);
+    if (e.key === "ArrowRight") show(i + 1);
+  });
+
+  // pouze jedno video hraje najednou
+  const vids = [...document.querySelectorAll("#galerie video")];
+  vids.forEach(v => v.addEventListener("play", () => vids.forEach(o => o !== v && o.pause())));
 })();
 
 /* ---------- navigace ---------- */
