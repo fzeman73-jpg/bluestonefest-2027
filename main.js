@@ -5,8 +5,8 @@ const CONFIG = {
   // Odkaz na prodej vstupenek v Boom Events. Dokud je prázdný,
   // tlačítka vedou na sekci Vstupenky na webu.
   ticketUrl: "",
-  instagram: "",
-  facebook: "",
+  instagram: "https://www.instagram.com/bluestone_fest/",
+  facebook: "https://www.facebook.com/bluestonefest",
   festivalStart: "2027-07-10T14:00:00+02:00",
   earlyBirdSoldOut: false // po vyprodání 200 ks přepněte na true
 };
