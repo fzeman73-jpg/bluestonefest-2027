@@ -233,6 +233,8 @@ details p{padding:0 22px 18px;margin:0;color:var(--muted)}
   .nav.is-open{background:var(--navy)}
   .nav__burger{display:block;margin-left:auto}
   .nav .btn--sm{display:none}
+  .hero{min-height:0;align-items:flex-start}
+  .hero__in{padding-top:104px;padding-bottom:44px}
   .sec{padding:68px 0}
   .heads,.split{grid-template-columns:1fr;gap:28px}
   .head{min-height:380px}
@@ -259,5 +261,10 @@ details p{padding:0 22px 18px;margin:0;color:var(--muted)}
   .hero__cta{margin:22px 0 26px}
   .card{padding:22px 18px}
   .ptable{font-size:.9rem}
+}
+@media (max-height:520px) and (orientation:landscape){
+  .hero{min-height:0;align-items:flex-start}
+  .hero__in{padding-top:96px;padding-bottom:40px}
+  .hero__title{font-size:clamp(3rem,9vw,6rem)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
