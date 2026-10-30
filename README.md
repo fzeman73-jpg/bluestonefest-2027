@@ -25,13 +25,19 @@ Aktuální cenová vlna se zvýrazňuje automaticky podle data (ceník 2027).
 - Fotky a texty o historii: stávající bluestonefest.cz (ročníky 2025–2026)
 
 ## Zbývá doplnit
-- [ ] odkaz Boom Events
-- [ ] popisy Piel Canela Marseille, Pan Lynx, akustický host
+- [ ] odkaz Boom Events (`ticketUrl` v `main.js`), do té doby formulář „Dejte mi vědět“ → Google Apps Script (tabulka + e-mail)
+- [ ] popisy a odkazy Piel Canela Marseille, Mikuláš Tichý, akustický host
 - [ ] fotky headlinerů 2027 (zatím fotky z minulých ročníků)
-- [ ] Instagram/Facebook, stránka ochrany osobních údajů
 - [ ] nová mapa areálu 2027
-- [ ] přepnutí domény bluestonefest.cz (soubor `CNAME` + DNS)
+- [ ] PNG ikony (apple-touch-icon 180×180, favicon 32×32) a vlastní hostování písem místo Google Fonts
+- [ ] Google Search Console: ověřit doménu a odeslat `sitemap.xml`
+
+## SEO a technika
+- `robots.txt`, `sitemap.xml` (při změně obsahu aktualizovat `lastmod`), `site.webmanifest`, `404.html`
+- strukturovaná data (JSON-LD) v hlavičce `index.html`: MusicEvent s ceníkem, WebSite, FAQPage – FAQ se při úpravě otázek musí upravit i v JSON-LD
+- `ochrana-osobnich-udaju.html` – GDPR text k formuláři
+- při změně CSS/JS zvednout `?v=` v odkazech, jinak prohlížeče drží starou verzi
 
 ## Nasazení (GitHub Pages)
 Settings → Pages → Deploy from branch → `main` / root.
-Doména: přidat soubor `CNAME` s textem `bluestonefest.cz` a u registrátora nastavit DNS na GitHub Pages.
+Doména bluestonefest.cz (soubor `CNAME`), DNS u Active24: A/AAAA na GitHub Pages, www jako CNAME na fzeman73-jpg.github.io. Pošta zůstává u Active24.
