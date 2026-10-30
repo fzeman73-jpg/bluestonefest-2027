@@ -6,8 +6,8 @@ const CONFIG = {
   // tlačítka vedou na sekci Vstupenky na webu.
   ticketUrl: "",
   saleStart: "2026-11-15T00:00:00+01:00", // start předprodeje
-  // Kam chodí e-maily z formuláře „Dejte mi vědět“ (FormSubmit.co)
-  signupEmail: "fzeman73@gmail.com",
+  // Formulář „Dejte mi vědět“ → Google Apps Script (zápis do Google tabulky + e-mail)
+  signupUrl: "https://script.google.com/macros/s/AKfycbxwUANpuI0SbvmZ2tTiHzQUFEW7sZBiCNBO9zXqb0MHmBhKYmbKO6TqDb_tZFCtmSps/exec",
   instagram: "https://www.instagram.com/bluestone_fest/",
   facebook: "https://www.facebook.com/bluestonefest",
   festivalStart: "2027-07-10T14:00:00+02:00",
@@ -68,18 +68,15 @@ document.querySelectorAll("[data-ticket]").forEach(a => {
     if (f._honey.value) return;
     btn.disabled = true; msg.className = "signup__msg"; msg.textContent = "Odesílám…";
     try {
-      const r = await fetch("https://formsubmit.co/ajax/" + CONFIG.signupEmail, {
+      const r = await fetch(CONFIG.signupUrl, {
         method: "POST",
-        headers: { "Content-Type": "application/json", "Accept": "application/json" },
         body: JSON.stringify({
-          _subject: "Bluestone Fest 2027 – zájem o předprodej",
-          _template: "table",
           jmeno: f.jmeno.value, email: f.email.value, souhlas: "ano",
           stranka: location.href
         })
       });
       const j = await r.json().catch(() => ({}));
-      if (!r.ok || j.success === false || j.success === "false") throw new Error(j.message || r.status);
+      if (!r.ok || j.success !== true) throw new Error(j.message || r.status);
       f.reset();
       msg.classList.add("is-ok");
       msg.textContent = "Díky! Ozveme se vám, jakmile 15. 11. spustíme předprodej.";
