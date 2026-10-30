@@ -1,0 +1,10 @@
+{
+  "name": "Bluestone Fest 2027",
+  "short_name": "Bluestone",
+  "lang": "cs",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#000a3d",
+  "theme_color": "#000a3d",
+  "icons": [{ "src": "/assets/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}
