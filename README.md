@@ -25,14 +25,14 @@ Aktuální cenová vlna se zvýrazňuje automaticky podle data (ceník 2027).
 - Fotky a texty o historii: stávající bluestonefest.cz (ročníky 2025–2026)
 
 ## Zbývá doplnit
-- [ ] odkaz Boom Events (`ticketUrl` v `main.js`), do té doby formulář „Dejte mi vědět“ → Google Apps Script (tabulka + e-mail)
+- [ ] odkaz Boom Events (`ticketUrl` v `main.js`), do té doby formulář „Dej mi vědět“ → Google Apps Script (tabulka + e-mail)
 - [ ] popisy a odkazy Piel Canela Marseille, Mikuláš Tichý, akustický host
 - [ ] fotky headlinerů 2027 (zatím fotky z minulých ročníků)
 - [ ] nová mapa areálu 2027
-- [ ] PNG ikony (apple-touch-icon 180×180, favicon 32×32) a vlastní hostování písem místo Google Fonts
 - [ ] Google Search Console: ověřit doménu a odeslat `sitemap.xml`
 
 ## SEO a technika
+- písma jsou hostovaná u nás (`fonts.css`, `assets/fonts/`), ikony v `assets/icons/`
 - `robots.txt`, `sitemap.xml` (při změně obsahu aktualizovat `lastmod`), `site.webmanifest`, `404.html`
 - strukturovaná data (JSON-LD) v hlavičce `index.html`: MusicEvent s ceníkem, WebSite, FAQPage – FAQ se při úpravě otázek musí upravit i v JSON-LD
 - `ochrana-osobnich-udaju.html` – GDPR text k formuláři
