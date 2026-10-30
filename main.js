@@ -79,10 +79,10 @@ document.querySelectorAll("[data-ticket]").forEach(a => {
       if (!r.ok || j.success !== true) throw new Error(j.message || r.status);
       f.reset();
       msg.classList.add("is-ok");
-      msg.textContent = "Díky! Ozveme se vám, jakmile 15. 11. spustíme předprodej.";
+      msg.textContent = "Díky! Ozveme se ti, jakmile 15. 11. spustíme předprodej.";
     } catch (err) {
       msg.classList.add("is-err");
-      msg.innerHTML = 'Odeslání se nepovedlo. Napište nám prosím na <a href="mailto:bluestonefest@gmail.com">bluestonefest@gmail.com</a>.';
+      msg.innerHTML = 'Odeslání se nepovedlo. Napiš nám prosím na <a href="mailto:bluestonefest@gmail.com">bluestonefest@gmail.com</a>.';
     } finally { btn.disabled = false; }
   });
 })();
