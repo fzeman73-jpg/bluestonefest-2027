@@ -163,6 +163,26 @@ a.ww__item:hover b{color:var(--orange-2)}
 .gift h3{margin-bottom:.2em}
 .gift p{margin:0;max-width:640px}
 
+/* signup – zájem o předprodej */
+.signup{display:grid;grid-template-columns:1fr 1.25fr;gap:28px;align-items:center;background:var(--navy);color:#fff;border-radius:var(--radius);padding:32px;margin:0 0 40px;border:3px solid var(--orange);scroll-margin-top:84px}
+.signup .eyebrow{color:var(--orange)}
+.signup h3{font-size:clamp(1.4rem,2.6vw,2rem);margin-bottom:.35em}
+.signup__txt p:last-child{margin:0;opacity:.85}
+.signup__row{display:grid;grid-template-columns:1fr 1.3fr auto;gap:10px}
+.signup input[type=text],.signup input[type=email]{font:inherit;font-size:1rem;padding:.85em 1em;border-radius:999px;border:2px solid rgba(255,255,255,.25);background:#fff;color:var(--text);min-width:0}
+.signup input:focus{outline:none;border-color:var(--orange)}
+.signup button{border:0;cursor:pointer;font-family:inherit}
+.signup button:disabled{opacity:.6;cursor:wait}
+.signup__ok{display:flex;gap:10px;align-items:flex-start;font-size:.82rem;opacity:.8;margin-top:12px;line-height:1.4}
+.signup__ok input{margin-top:.2em;accent-color:var(--orange);flex:none}
+.signup__msg{margin:10px 0 0;font-weight:700;min-height:1.4em}
+.signup__msg.is-ok{color:var(--orange-2)}
+.signup__msg.is-err{color:#ffb4a8}
+.signup__msg a{color:#fff}
+.signup__hp,.sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+@media (max-width:980px){.signup{grid-template-columns:1fr}}
+@media (max-width:640px){.signup{padding:24px 18px}.signup__row{grid-template-columns:1fr}.signup button{width:100%}}
+
 /* artists */
 .artists{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:36px}
 .artist{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:24px 22px;display:flex;flex-direction:column}

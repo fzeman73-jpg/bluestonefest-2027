@@ -5,6 +5,9 @@ const CONFIG = {
   // Odkaz na prodej vstupenek v Boom Events. Dokud je prázdný,
   // tlačítka vedou na sekci Vstupenky na webu.
   ticketUrl: "",
+  saleStart: "2026-11-15T00:00:00+01:00", // start předprodeje
+  // Kam chodí e-maily z formuláře „Dejte mi vědět“ (FormSubmit.co)
+  signupEmail: "fzeman73@gmail.com",
   instagram: "https://www.instagram.com/bluestone_fest/",
   facebook: "https://www.facebook.com/bluestonefest",
   festivalStart: "2027-07-10T14:00:00+02:00",
@@ -46,11 +49,45 @@ document.querySelectorAll("[data-ticket]").forEach(a => {
   if (!marked && items[0] && !items[0].classList.contains("is-past")) items[0].classList.add("is-now");
 
   const banner = document.querySelector("[data-phase-banner]");
+  if (today < new Date(CONFIG.saleStart)) return; // před startem nechat text „Předprodej od 15. 11.“
   const now = document.querySelector("[data-waves] li.is-now");
   if (banner && now) {
     banner.querySelector("b").textContent = now.querySelector("h3").textContent + " " + now.querySelector(".waves__price").textContent;
     banner.querySelector("span").textContent = now.querySelector(".waves__when").textContent;
   }
+})();
+
+/* ---------- formulář: zájem o předprodej ---------- */
+(function () {
+  const f = document.querySelector("[data-signup]");
+  if (!f) return;
+  const msg = f.querySelector("[data-signup-msg]");
+  const btn = f.querySelector("button");
+  f.addEventListener("submit", async e => {
+    e.preventDefault();
+    if (f._honey.value) return;
+    btn.disabled = true; msg.className = "signup__msg"; msg.textContent = "Odesílám…";
+    try {
+      const r = await fetch("https://formsubmit.co/ajax/" + CONFIG.signupEmail, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Accept": "application/json" },
+        body: JSON.stringify({
+          _subject: "Bluestone Fest 2027 – zájem o předprodej",
+          _template: "table",
+          jmeno: f.jmeno.value, email: f.email.value, souhlas: "ano",
+          stranka: location.href
+        })
+      });
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok || j.success === false || j.success === "false") throw new Error(j.message || r.status);
+      f.reset();
+      msg.classList.add("is-ok");
+      msg.textContent = "Díky! Ozveme se vám, jakmile 15. 11. spustíme předprodej.";
+    } catch (err) {
+      msg.classList.add("is-err");
+      msg.innerHTML = 'Odeslání se nepovedlo. Napište nám prosím na <a href="mailto:bluestonefest@gmail.com">bluestonefest@gmail.com</a>.';
+    } finally { btn.disabled = false; }
+  });
 })();
 
 /* ---------- odpočet ---------- */
