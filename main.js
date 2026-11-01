@@ -61,28 +61,37 @@ document.querySelectorAll("[data-ticket]").forEach(a => {
 (function () {
   const f = document.querySelector("[data-signup]");
   if (!f) return;
+  // Vlastní validace se srozumitelnou hláškou: iOS Safari u neplatného formuláře
+  // nic neukáže a tlačítko pak působí jako nefunkční.
+  f.noValidate = true;
   const msg = f.querySelector("[data-signup-msg]");
   const btn = f.querySelector("button");
+  const ok = f.querySelector('input[name="souhlas"]');
+  const say = (cls, html) => { msg.className = "signup__msg" + (cls ? " " + cls : ""); msg.innerHTML = html; };
   f.addEventListener("submit", async e => {
     e.preventDefault();
-    if (f._honey.value) return;
-    btn.disabled = true; msg.className = "signup__msg"; msg.textContent = "Odesílám…";
+    const email = f.email.value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      say("is-err", "Zadej prosím platný e-mail."); f.email.focus(); return;
+    }
+    if (!ok.checked) {
+      say("is-err", "Zaškrtni prosím souhlas s kontaktováním."); ok.focus(); return;
+    }
+    btn.disabled = true; say("", "Odesílám…");
     try {
       const r = await fetch(CONFIG.signupUrl, {
         method: "POST",
         body: JSON.stringify({
-          jmeno: f.jmeno.value, email: f.email.value, souhlas: "ano",
+          jmeno: f.jmeno.value, email: email, souhlas: "ano",
           stranka: location.href
         })
       });
       const j = await r.json().catch(() => ({}));
       if (!r.ok || j.success !== true) throw new Error(j.message || r.status);
       f.reset();
-      msg.classList.add("is-ok");
-      msg.textContent = "Díky! Ozveme se ti, jakmile 15. 11. spustíme předprodej.";
+      say("is-ok", "Díky! Ozveme se ti, jakmile 15. 11. spustíme předprodej.");
     } catch (err) {
-      msg.classList.add("is-err");
-      msg.innerHTML = 'Odeslání se nepovedlo. Napiš nám prosím na <a href="mailto:bluestonefest@gmail.com">bluestonefest@gmail.com</a>.';
+      say("is-err", 'Odeslání se nepovedlo. Napiš nám prosím na <a href="mailto:bluestonefest@gmail.com">bluestonefest@gmail.com</a>.');
     } finally { btn.disabled = false; }
   });
 })();
