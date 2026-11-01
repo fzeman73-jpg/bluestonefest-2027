@@ -28,7 +28,6 @@ Aktuální cenová vlna se zvýrazňuje automaticky podle data (ceník 2027).
 - [ ] odkaz Boom Events (`ticketUrl` v `main.js`), do té doby formulář „Dej mi vědět“ → Google Apps Script (tabulka + e-mail)
 - [ ] popisy a odkazy Piel Canela Marseille, Mikuláš Tichý, akustický host
 - [ ] fotky headlinerů 2027 (zatím fotky z minulých ročníků)
-- [ ] nová mapa areálu 2027
 - [ ] Google Search Console: ověřit doménu a odeslat `sitemap.xml`
 
 ## SEO a technika
