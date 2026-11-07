@@ -2,10 +2,14 @@
    KONFIGURACE — tady měňte odkazy, nic jiného není potřeba
    ============================================================ */
 const CONFIG = {
-  // Odkaz na prodej vstupenek v Boom Events. Dokud je prázdný,
-  // tlačítka vedou na sekci Vstupenky na webu.
+  // Odkaz na akci v GoOut. Tlačítka „Koupit“ se přepnou na GoOut
+  // automaticky, jakmile je odkaz vyplněný A nastal saleStart.
+  // Do té doby vedou na formulář „Dej mi vědět“.
   ticketUrl: "",
   saleStart: "2026-11-15T00:00:00+01:00", // start předprodeje
+  // Meta Pixel ID z Business Manageru (15–16 číslic). Prázdné = žádné měření
+  // a žádná cookie lišta. Pixel se načte jen po souhlasu návštěvníka.
+  metaPixelId: "",
   // Formulář „Dejte mi vědět“ → Google Apps Script (zápis do Google tabulky + e-mail)
   signupUrl: "https://script.google.com/macros/s/AKfycbxwUANpuI0SbvmZ2tTiHzQUFEW7sZBiCNBO9zXqb0MHmBhKYmbKO6TqDb_tZFCtmSps/exec",
   instagram: "https://www.instagram.com/bluestone_fest/",
@@ -14,14 +18,120 @@ const CONFIG = {
   earlyBirdSoldOut: false // po vyprodání 200 ks přepněte na true
 };
 
-/* ---------- vstupenky ---------- */
-document.querySelectorAll("[data-ticket]").forEach(a => {
-  if (CONFIG.ticketUrl) {
-    a.href = CONFIG.ticketUrl;
-    a.target = "_blank";
-    a.rel = "noopener";
+const SALE_LIVE = !!CONFIG.ticketUrl && Date.now() >= new Date(CONFIG.saleStart).getTime();
+
+/* ---------- souhlas s cookies + Meta Pixel ---------- */
+const Consent = (function () {
+  const KEY = "bs_consent"; // "all" | "necessary"
+  const get = () => { try { return localStorage.getItem(KEY); } catch (e) { return null; } };
+  const set = v => { try { localStorage.setItem(KEY, v); } catch (e) {} };
+  let pixelOn = false;
+
+  function loadPixel() {
+    if (pixelOn || !CONFIG.metaPixelId) return;
+    pixelOn = true;
+    !function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () { n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments); };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = "2.0"; n.queue = [];
+      t = b.createElement(e); t.async = !0; t.src = v; s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+    }(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
+    window.fbq("init", CONFIG.metaPixelId);
+    window.fbq("track", "PageView");
   }
-});
+
+  function injectStyles() {
+    const css = `
+.cc{position:fixed;left:12px;right:12px;bottom:12px;z-index:1000;max-width:560px;margin:0 auto;
+  background:var(--navy,#000a3d);color:#fff;border-radius:14px;border:2px solid var(--orange,#f5a623);padding:16px 18px;box-shadow:0 10px 40px rgba(0,0,0,.35);
+  font-size:14px;line-height:1.45}
+.cc[hidden]{display:none}
+.cc p{margin:0 0 12px}
+.cc a{color:inherit;text-decoration:underline}
+.cc__btns{display:flex;gap:8px;flex-wrap:wrap}
+.cc__btns button{flex:1 1 140px;cursor:pointer;border-radius:999px;padding:10px 14px;font:inherit;font-weight:700;border:2px solid #fff}
+.cc__all{background:var(--orange,#fff);border-color:var(--orange,#fff)!important;color:var(--navy,#000a3d)}
+.cc__nec{background:transparent;color:#fff}
+.cc-open{background:none;border:0;padding:0;color:inherit;font:inherit;text-decoration:underline;cursor:pointer;opacity:.8}`;
+    const s = document.createElement("style"); s.textContent = css; document.head.appendChild(s);
+  }
+
+  function banner() {
+    let el = document.querySelector(".cc");
+    if (el) return el;
+    injectStyles();
+    el = document.createElement("div");
+    el.className = "cc"; el.hidden = true;
+    el.setAttribute("role", "dialog"); el.setAttribute("aria-label", "Souhlas s cookies");
+    el.innerHTML = '<p>Rádi bychom měřili, jak fungují naše reklamy na Facebooku a Instagramu (Meta Pixel). ' +
+      'Bez tvého souhlasu nic takového nenačteme. <a href="/ochrana-osobnich-udaju.html">Víc info</a></p>' +
+      '<div class="cc__btns"><button type="button" class="cc__all">Souhlasím</button>' +
+      '<button type="button" class="cc__nec">Jen nezbytné</button></div>';
+    document.body.appendChild(el);
+    el.querySelector(".cc__all").onclick = () => { set("all"); el.hidden = true; loadPixel(); };
+    el.querySelector(".cc__nec").onclick = () => {
+      set("necessary"); el.hidden = true;
+      if (pixelOn && window.fbq) window.fbq("consent", "revoke");
+    };
+    return el;
+  }
+
+  function open() { if (CONFIG.metaPixelId) banner().hidden = false; }
+
+  function init() {
+    if (!CONFIG.metaPixelId) return;
+    // odkaz „Nastavení cookies“ v patičce
+    const privacy = document.querySelector('.foot a[href="ochrana-osobnich-udaju.html"]');
+    if (privacy) {
+      const b = document.createElement("button");
+      b.type = "button"; b.className = "cc-open"; b.textContent = "Nastavení cookies";
+      b.onclick = open;
+      privacy.after(" · ", b);
+    }
+    const c = get();
+    const ask = new URLSearchParams(location.search).has("cookies");
+    if (c === "all" && !ask) loadPixel();
+    else if (!c || ask) open();
+  }
+
+  function track(event, params) {
+    if (pixelOn && window.fbq) window.fbq("track", event, params || {});
+  }
+
+  return { init, track, open };
+})();
+Consent.init();
+
+/* ---------- vstupenky ---------- */
+// Odkaz na GoOut včetně UTM parametrů, se kterými návštěvník přišel z reklamy
+function ticketHref() {
+  try {
+    const u = new URL(CONFIG.ticketUrl);
+    const here = new URLSearchParams(location.search);
+    ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"].forEach(k => {
+      if (here.has(k) && !u.searchParams.has(k)) u.searchParams.set(k, here.get(k));
+    });
+    return u.toString();
+  } catch (e) { return CONFIG.ticketUrl; }
+}
+
+if (SALE_LIVE) {
+  const href = ticketHref();
+  const price = CONFIG.earlyBirdSoldOut ? "1 059" : "990";
+  document.querySelectorAll("[data-ticket]").forEach(a => {
+    a.href = href; a.target = "_blank"; a.rel = "noopener";
+    a.addEventListener("click", () => Consent.track("InitiateCheckout", { currency: "CZK" }));
+  });
+  // texty tlačítek, které mluví o „předprodeji od 15. 11.“
+  const txt = (sel, t) => { const el = document.querySelector(sel); if (el) el.textContent = t; };
+  txt(".nav .btn[data-ticket]", "Vstupenky");
+  txt(".hero__cta .btn[data-ticket]", "Koupit vstupenky");
+  txt(".final .btn[data-ticket]", "Koupit vstupenky");
+  txt(".sticky-cta", "Koupit vstupenky · od " + price + " Kč");
+  // formulář „Dej mi vědět“ už není potřeba
+  const su = document.querySelector(".signup");
+  if (su) su.style.display = "none";
+}
+
 ["instagram", "facebook"].forEach(k => {
   document.querySelectorAll(`[data-social="${k}"]`).forEach(a => {
     if (CONFIG[k]) { a.href = CONFIG[k]; a.target = "_blank"; a.rel = "noopener"; }
@@ -89,6 +199,7 @@ document.querySelectorAll("[data-ticket]").forEach(a => {
       const j = await r.json().catch(() => ({}));
       if (!r.ok || j.success !== true) throw new Error(j.message || r.status);
       f.reset();
+      Consent.track("Lead"); // jen událost, e-mail se do Mety neposílá
       say("is-ok", "Díky! Ozveme se ti, jakmile 15. 11. spustíme předprodej.");
     } catch (err) {
       say("is-err", 'Odeslání se nepovedlo. Napiš nám prosím na <a href="mailto:bluestonefest@gmail.com">bluestonefest@gmail.com</a>.');
