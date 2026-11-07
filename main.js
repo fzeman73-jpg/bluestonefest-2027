@@ -9,7 +9,7 @@ const CONFIG = {
   saleStart: "2026-11-15T00:00:00+01:00", // start předprodeje
   // Meta Pixel ID z Business Manageru (15–16 číslic). Prázdné = žádné měření
   // a žádná cookie lišta. Pixel se načte jen po souhlasu návštěvníka.
-  metaPixelId: "",
+  metaPixelId: "1858381068538076",
   // Formulář „Dejte mi vědět“ → Google Apps Script (zápis do Google tabulky + e-mail)
   signupUrl: "https://script.google.com/macros/s/AKfycbxwUANpuI0SbvmZ2tTiHzQUFEW7sZBiCNBO9zXqb0MHmBhKYmbKO6TqDb_tZFCtmSps/exec",
   instagram: "https://www.instagram.com/bluestone_fest/",
