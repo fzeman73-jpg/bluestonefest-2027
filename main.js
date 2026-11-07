@@ -10,6 +10,8 @@ const CONFIG = {
   // Meta Pixel ID z Business Manageru (15–16 číslic). Prázdné = žádné měření
   // a žádná cookie lišta. Pixel se načte jen po souhlasu návštěvníka.
   metaPixelId: "1858381068538076",
+  // Google Analytics 4 – ID měření (G-…). Načte se taky jen po souhlasu.
+  gaId: "G-CDNWD8GHRX",
   // Formulář „Dejte mi vědět“ → Google Apps Script (zápis do Google tabulky + e-mail)
   signupUrl: "https://script.google.com/macros/s/AKfycbxwUANpuI0SbvmZ2tTiHzQUFEW7sZBiCNBO9zXqb0MHmBhKYmbKO6TqDb_tZFCtmSps/exec",
   instagram: "https://www.instagram.com/bluestone_fest/",
@@ -25,7 +27,23 @@ const Consent = (function () {
   const KEY = "bs_consent"; // "all" | "necessary"
   const get = () => { try { return localStorage.getItem(KEY); } catch (e) { return null; } };
   const set = v => { try { localStorage.setItem(KEY, v); } catch (e) {} };
-  let pixelOn = false;
+  let pixelOn = false, gaOn = false;
+  const enabled = () => !!(CONFIG.metaPixelId || CONFIG.gaId);
+
+  function loadGA() {
+    if (gaOn || !CONFIG.gaId) return;
+    gaOn = true;
+    window["ga-disable-" + CONFIG.gaId] = false;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    const t = document.createElement("script");
+    t.async = true; t.src = "https://www.googletagmanager.com/gtag/js?id=" + CONFIG.gaId;
+    document.head.appendChild(t);
+    window.gtag("js", new Date());
+    window.gtag("config", CONFIG.gaId);
+  }
+
+  function loadAll() { loadPixel(); loadGA(); }
 
   function loadPixel() {
     if (pixelOn || !CONFIG.metaPixelId) return;
@@ -62,23 +80,24 @@ const Consent = (function () {
     el = document.createElement("div");
     el.className = "cc"; el.hidden = true;
     el.setAttribute("role", "dialog"); el.setAttribute("aria-label", "Souhlas s cookies");
-    el.innerHTML = '<p>Rádi bychom měřili, jak fungují naše reklamy na Facebooku a Instagramu (Meta Pixel). ' +
+    el.innerHTML = '<p>Rádi bychom měřili návštěvnost webu (Google Analytics) a to, jak fungují naše reklamy na Facebooku a Instagramu (Meta Pixel). ' +
       'Bez tvého souhlasu nic takového nenačteme. <a href="/ochrana-osobnich-udaju.html">Víc info</a></p>' +
       '<div class="cc__btns"><button type="button" class="cc__all">Souhlasím</button>' +
       '<button type="button" class="cc__nec">Jen nezbytné</button></div>';
     document.body.appendChild(el);
-    el.querySelector(".cc__all").onclick = () => { set("all"); el.hidden = true; loadPixel(); };
+    el.querySelector(".cc__all").onclick = () => { set("all"); el.hidden = true; loadAll(); };
     el.querySelector(".cc__nec").onclick = () => {
       set("necessary"); el.hidden = true;
       if (pixelOn && window.fbq) window.fbq("consent", "revoke");
+      if (gaOn && CONFIG.gaId) window["ga-disable-" + CONFIG.gaId] = true;
     };
     return el;
   }
 
-  function open() { if (CONFIG.metaPixelId) banner().hidden = false; }
+  function open() { if (enabled()) banner().hidden = false; }
 
   function init() {
-    if (!CONFIG.metaPixelId) return;
+    if (!enabled()) return;
     // odkaz „Nastavení cookies“ v patičce
     const privacy = document.querySelector('.foot a[href="ochrana-osobnich-udaju.html"]');
     if (privacy) {
@@ -89,12 +108,15 @@ const Consent = (function () {
     }
     const c = get();
     const ask = new URLSearchParams(location.search).has("cookies");
-    if (c === "all" && !ask) loadPixel();
+    if (c === "all" && !ask) loadAll();
     else if (!c || ask) open();
   }
 
+  // Meta název události → GA4 doporučená událost
+  const GA_EVENT = { Lead: "generate_lead", InitiateCheckout: "begin_checkout" };
   function track(event, params) {
     if (pixelOn && window.fbq) window.fbq("track", event, params || {});
+    if (gaOn && window.gtag) window.gtag("event", GA_EVENT[event] || event, params || {});
   }
 
   return { init, track, open };
