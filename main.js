@@ -152,6 +152,20 @@ if (SALE_LIVE) {
   // formulář „Dej mi vědět“ už není potřeba
   const su = document.querySelector(".signup");
   if (su) su.style.display = "none";
+  // texty, které před startem zvou k zanechání e-mailu
+  const lead = document.querySelector("#vstupenky .sec__head .lead");
+  if (lead) lead.innerHTML = "Pět kapel za cenu jednoho koncertu. Předprodej právě běží a cena v čase poroste. <strong>Kup si lístky hned.</strong>";
+  const note = document.querySelector("#vstupenky > .wrap > .note");
+  if (note) note.textContent = "Všechny ceny jsou včetně DPH. Vstupenky prodáváme přes GoOut.";
+  document.querySelectorAll("#faq details").forEach(d => {
+    const s = d.querySelector("summary");
+    if (s && /Kdy začne předprodej/.test(s.textContent)) {
+      s.textContent = "Kde koupím vstupenky?";
+      d.querySelector("p").innerHTML = 'Předprodej běží od 15. 11. 2026 přes GoOut. <a class="link" href="' + href + '" target="_blank" rel="noopener">Koupit vstupenky →</a>';
+    }
+  });
+  const btn = document.querySelector(".final .btn[data-ticket]");
+  if (btn) btn.textContent = "Koupit vstupenky";
 }
 
 ["instagram", "facebook"].forEach(k => {
