@@ -5,7 +5,7 @@ const CONFIG = {
   // Odkaz na akci v GoOut. Tlačítka „Koupit“ se přepnou na GoOut
   // automaticky, jakmile je odkaz vyplněný A nastal saleStart.
   // Do té doby vedou na formulář „Dej mi vědět“.
-  ticketUrl: "",
+  ticketUrl: "https://goout.net/cs/bluestone-fest/szlimpy/",
   saleStart: "2026-11-15T00:00:00+01:00", // start předprodeje
   // Meta Pixel ID z Business Manageru (15–16 číslic). Prázdné = žádné měření
   // a žádná cookie lišta. Pixel se načte jen po souhlasu návštěvníka.
