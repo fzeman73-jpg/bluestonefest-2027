@@ -8,7 +8,7 @@ Vše podstatné je nahoře v `main.js` v objektu `CONFIG`:
 
 | Klíč | Co to je |
 | --- | --- |
-| `ticketUrl` | odkaz na prodej v **Boom Events** – po vyplnění vedou všechna tlačítka „Koupit“ tam |
+| `ticketUrl` | odkaz na akci na **GoOut** – po vyplnění vedou všechna tlačítka „Koupit“ tam |
 | `instagram`, `facebook` | odkazy na sociální sítě (prázdné = skryté) |
 | `earlyBirdSoldOut` | po vyprodání 200 ks super early bird přepnout na `true` |
 
@@ -25,7 +25,7 @@ Aktuální cenová vlna se zvýrazňuje automaticky podle data (ceník 2027).
 - Fotky a texty o historii: stávající bluestonefest.cz (ročníky 2025–2026)
 
 ## Zbývá doplnit
-- [ ] odkaz Boom Events (`ticketUrl` v `main.js`), do té doby formulář „Dej mi vědět“ → Google Apps Script (tabulka + e-mail)
+- [ ] odkaz GoOut (`ticketUrl` v `main.js`), do té doby formulář „Dej mi vědět“ → Google Apps Script (tabulka + e-mail)
 - [ ] popisy a odkazy Piel Canela Marseille, Mikuláš Tichý, akustický host
 - [ ] fotky headlinerů 2027 (zatím fotky z minulých ročníků)
 - [ ] Google Search Console: ověřit doménu a odeslat `sitemap.xml`
