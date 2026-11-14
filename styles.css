@@ -333,3 +333,6 @@ details p{padding:0 22px 18px;margin:0;color:var(--muted)}
   .ww{grid-template-columns:auto auto}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+.cc-open{background:none;border:0;padding:0;font:inherit;color:inherit;text-decoration:underline;cursor:pointer}
+.cc-open:hover{color:var(--gold,#e39514)}
