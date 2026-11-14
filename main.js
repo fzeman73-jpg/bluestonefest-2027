@@ -269,7 +269,7 @@ if (SALE_LIVE) {
   const lb = document.querySelector("[data-lbox]");
   const img = lb.querySelector("img");
   let i = 0;
-  const show = n => { i = (n + items.length) % items.length; img.src = items[i].href; lb.hidden = false; };
+  const show = n => { i = (n + items.length) % items.length; img.src = items[i].href; const t = items[i].querySelector("img"); img.alt = (t && t.alt) || "Fotka z Bluestone Fest"; lb.hidden = false; };
   items.forEach((a, n) => a.addEventListener("click", e => { e.preventDefault(); show(n); }));
   lb.querySelector(".lb__x").onclick = () => lb.hidden = true;
   lb.querySelector(".lb__prev").onclick = e => { e.stopPropagation(); show(i - 1); };
