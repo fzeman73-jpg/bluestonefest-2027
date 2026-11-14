@@ -25,7 +25,7 @@ Aktuální cenová vlna se zvýrazňuje automaticky podle data (ceník 2027).
 - Fotky a texty o historii: stávající bluestonefest.cz (ročníky 2025–2026)
 
 ## Zbývá doplnit
-- [ ] odkaz GoOut (`ticketUrl` v `main.js`), do té doby formulář „Dej mi vědět“ → Google Apps Script (tabulka + e-mail)
+- [x] odkaz GoOut (`ticketUrl` v `main.js`), prodej od 15. 11. 2026 8:00 (`saleStart`)
 - [ ] popisy a odkazy Piel Canela Marseille, Mikuláš Tichý, akustický host
 - [ ] fotky headlinerů 2027 (zatím fotky z minulých ročníků)
 - [ ] Google Search Console: ověřit doménu a odeslat `sitemap.xml`
