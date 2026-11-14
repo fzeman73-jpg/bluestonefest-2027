@@ -6,7 +6,7 @@ const CONFIG = {
   // automaticky, jakmile je odkaz vyplněný A nastal saleStart.
   // Do té doby vedou na formulář „Dej mi vědět“.
   ticketUrl: "https://goout.net/cs/bluestone-fest/szlimpy/",
-  saleStart: "2026-11-15T00:00:00+01:00", // start předprodeje
+  saleStart: "2026-11-15T08:00:00+01:00", // start předprodeje
   // Meta Pixel ID z Business Manageru (15–16 číslic). Prázdné = žádné měření
   // a žádná cookie lišta. Pixel se načte jen po souhlasu návštěvníka.
   metaPixelId: "1858381068538076",
@@ -236,7 +236,7 @@ if (SALE_LIVE) {
       if (!r.ok || j.success !== true) throw new Error(j.message || r.status);
       f.reset();
       Consent.track("Lead"); // jen událost, e-mail se do Mety neposílá
-      say("is-ok", "Díky! Ozveme se ti, jakmile 15. 11. spustíme předprodej.");
+      say("is-ok", "Díky! Ozveme se ti, jakmile 15. 11. v 8:00 spustíme předprodej.");
     } catch (err) {
       say("is-err", 'Odeslání se nepovedlo. Napiš nám prosím na <a href="mailto:bluestonefest@gmail.com">bluestonefest@gmail.com</a>.');
     } finally { btn.disabled = false; }
