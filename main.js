@@ -137,6 +137,7 @@ function ticketHref() {
 }
 
 if (SALE_LIVE) {
+  const qr = document.querySelector("[data-qr]"); if (qr) qr.hidden = false;
   const href = ticketHref();
   const price = CONFIG.earlyBirdSoldOut ? "1 059" : "990";
   document.querySelectorAll("[data-ticket]").forEach(a => {
