@@ -237,7 +237,8 @@ details p{padding:0 22px 18px;margin:0;color:var(--muted)}
 .logos{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:48px}
 .logos img{height:74px;width:auto;object-fit:contain;filter:grayscale(1);opacity:.75;transition:.2s}
 .logos img.logo--wide{height:34px}
-.logos img:hover{filter:none;opacity:1}
+.logos img:hover,.logos a:hover img{filter:none;opacity:1}
+.logos a{display:flex}
 .sponsors{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:40px 72px;margin:0 0 56px}
 .sponsors img{width:auto;transition:opacity .2s}
 .sponsors a:hover img{opacity:.75}
