@@ -155,7 +155,7 @@ if (SALE_LIVE) {
   if (su) su.style.display = "none";
   // texty, které před startem zvou k zanechání e-mailu
   const lead = document.querySelector("#vstupenky .sec__head .lead");
-  if (lead) lead.innerHTML = "Pět kapel za cenu jednoho koncertu. Předprodej právě běží a cena v čase poroste. <strong>Kup si lístky hned.</strong>";
+  if (lead) lead.innerHTML = "Sedm kapel za cenu jednoho koncertu. Předprodej právě běží a cena v čase poroste. <strong>Kup si lístky hned.</strong>";
   const note = document.querySelector("#vstupenky > .wrap > .note");
   if (note) note.textContent = "Všechny ceny jsou včetně DPH. Vstupenky prodáváme přes GoOut, který si při nákupu připočítává servisní poplatek 3,5 % (u vstupenky za 990 Kč je to 35 Kč).";
   document.querySelectorAll("#faq details").forEach(d => {
